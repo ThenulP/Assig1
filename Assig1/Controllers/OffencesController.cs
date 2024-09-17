@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Assig1.Data;
 using Assig1.Models;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Assig1.Controllers
 {
@@ -25,10 +26,20 @@ namespace Assig1.Controllers
             ViewBag.Title = "Offences";
             ViewBag.Active = "Offences";
 
-            var expiationsContext = _context
+            /*var expiationsContext = _context
                 .Offences
                 .Include(o => o.Section)
-                .OrderBy(o => o.OffenceCode);
+                .OrderBy(o => o.OffenceCode);*/
+
+            var expiationsContext = from Offence in _context.Offences
+                                    join Section in _context.Sections on Offence.SectionId equals Section.SectionId
+                                    join ExpiationCategory in _context.ExpiationCategories on Section.CategoryId equals ExpiationCategory.CategoryId
+                                    select new
+                                    {
+                                        section = Section,
+                                        offence = Offence,
+                                        expiationCategory = ExpiationCategory
+                                    };
 
             return View(await expiationsContext.ToListAsync());
         }
