@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Assig1.Models.Offence>
+﻿@model IEnumerable<Assig1.ViewModels.OffenceAndExpiationCategory>
 
 @{
     ViewData["Title"] = "Index";
@@ -15,28 +15,28 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayNameFor(model => model.First().Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ExpiationFee)
+                @Html.DisplayNameFor(model => model.First().ExpiationFee)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AdultLevy)
+                @Html.DisplayNameFor(model => model.First().AdultLevy)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CorporateFee)
+                @Html.DisplayNameFor(model => model.First().CorporateFee)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TotalFee)
+                @Html.DisplayNameFor(model => model.First().TotalFee)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DemeritPoints)
+                @Html.DisplayNameFor(model => model.First().DemeritPoints)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SectionCode)
+                @Html.DisplayNameFor(model => model.First().SectionCode)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Section)
+                @Html.DisplayNameFor(model => model.First().SectionId)
             </th>
             <th></th>
         </tr>
@@ -67,7 +67,7 @@
                     @Html.DisplayFor(modelItem => item.SectionCode)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Section.SectionId)
+                    @Html.DisplayFor(modelItem => item.SectionId)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.OffenceCode">Edit</a> |

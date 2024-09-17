@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Assig1.Data;
 using Assig1.Models;
 using static System.Collections.Specialized.BitVector32;
+using Assig1.ViewModels;
 
 namespace Assig1.Controllers
 {
@@ -34,11 +35,19 @@ namespace Assig1.Controllers
             var expiationsContext = from Offence in _context.Offences
                                     join Section in _context.Sections on Offence.SectionId equals Section.SectionId
                                     join ExpiationCategory in _context.ExpiationCategories on Section.CategoryId equals ExpiationCategory.CategoryId
-                                    select new
+                                    select new OffenceAndExpiationCategory
                                     {
-                                        section = Section,
-                                        offence = Offence,
-                                        expiationCategory = ExpiationCategory
+                                        OffenceCode = Offence.OffenceCode,
+                                        Description = Offence.Description,
+                                        ExpiationFee = Offence.ExpiationFee,
+                                        AdultLevy = Offence.AdultLevy,
+                                        CorporateFee = Offence.CorporateFee,
+                                        TotalFee = Offence.TotalFee,
+                                        DemeritPoints = Offence.DemeritPoints,
+                                        SectionId = Section.SectionId,
+                                        SectionCode = Section.SectionCode,
+                                        CategoryId = ExpiationCategory.CategoryId,
+                                        CategoryName = ExpiationCategory.CategoryName
                                     };
 
             return View(await expiationsContext.ToListAsync());
