@@ -60,6 +60,17 @@ namespace Assig1.Controllers
             return View(await expiationsContext.ToListAsync());
         }
 
+        public IActionResult GetOffenceDescriptions(string search)
+        {
+            var results = _context.Offences
+                .Where(o => o.Description.Contains(search))
+                .Select(o => o.Description)
+                .Take(10)
+                .ToList();
+
+            return Json(results);
+        }
+
         // GET: Offences/Details/A002
         public async Task<IActionResult> Details(string id)
         {
