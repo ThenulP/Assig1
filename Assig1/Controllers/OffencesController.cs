@@ -22,7 +22,7 @@ namespace Assig1.Controllers
         }
 
         // GET: Offences
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string offence)
         {
             ViewBag.Title = "Offences";
             ViewBag.Active = "Offences";
@@ -49,6 +49,13 @@ namespace Assig1.Controllers
                                         CategoryId = ExpiationCategory.CategoryId,
                                         CategoryName = ExpiationCategory.CategoryName
                                     };
+
+            if (!string.IsNullOrEmpty(offence))
+            {
+                var search = expiationsContext
+                    .Where(ec => ec.Description.Contains(offence));
+                expiationsContext = search;
+            }
 
             return View(await expiationsContext.ToListAsync());
         }
