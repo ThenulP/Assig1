@@ -45,5 +45,7 @@ namespace Assig1.ViewModels
         [Required]
         public string CategoryName { get; set; } = null!;
 
+        public int? ParentCategoryId { get; set; }
+
     }
 }

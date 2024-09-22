@@ -47,8 +47,20 @@ namespace Assig1.Controllers
                                         SectionId = Section.SectionId,
                                         SectionCode = Section.SectionCode,
                                         CategoryId = ExpiationCategory.CategoryId,
-                                        CategoryName = ExpiationCategory.CategoryName
+                                        CategoryName = ExpiationCategory.CategoryName,
+                                        ParentCategoryId = ExpiationCategory.ParentCategoryId
                                     };
+            #region Categories
+            var categories = expiationsContext
+                .Where(ec => ec.ParentCategoryId != null)
+                .Select(ec => new
+                {
+                    ec.CategoryId,
+                    ec.CategoryName,
+                });
+
+            #endregion 
+            #region SearchFunction
 
             if (!string.IsNullOrEmpty(offence))
             {
@@ -57,9 +69,12 @@ namespace Assig1.Controllers
                 expiationsContext = search;
             }
 
+            #endregion 
+
             return View(await expiationsContext.ToListAsync());
         }
 
+        [Route("OffenceController/GetOffenceDescriptions")]
         public IActionResult GetOffenceDescriptions(string search)
         {
             var results = _context.Offences

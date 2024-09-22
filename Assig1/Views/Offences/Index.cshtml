@@ -10,6 +10,7 @@
 
 <form asp-action="Index" method="get">
     <input type="text" id="offence" name="offence">
+    <div id="suggestions" style="display: none;"></div>
     <button type="submit">Search</button>
 </form>
 
@@ -83,3 +84,40 @@
         }
     </tbody>
 </table>
+
+@section Scripts{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const inputField = document.getElementById('offence');
+            const suggestionBox = document.getElementById('suggestions');
+            console.log(inputField.value);
+
+            inputField.addEventListener('input', function () {
+                const query = inputField.value;
+
+                if (query.length >= 2) {
+                    fetch(`/OffenceController/GetOffenceDescriptions?search=${query}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            suggestionBox.innerHTML = '';
+                            suggestionBox.style.display = 'block';
+
+                            data.forEach(item => {
+                                const div = document.createElement('div');
+                                div.textContent = item;
+                                div.classList.add('suggestion-item');
+                                div.addEventListener('click', function () {
+                                    inputField.value = item;
+                                    suggestionBox.style.display = 'none';
+                                });
+                                suggestionBox.appendChild(div);
+                            });
+                        });
+                } else {
+                    suggestionBox.style.display = 'none';
+                }
+            });
+
+        });
+    </script>
+}
