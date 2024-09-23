@@ -79,6 +79,7 @@ namespace Assig1.Controllers
         {
             var results = _context.Offences
                 .Where(o => o.Description.Contains(search))
+                .OrderBy(o => o.Description)
                 .Select(o => o.Description)
                 .Take(10)
                 .ToList();

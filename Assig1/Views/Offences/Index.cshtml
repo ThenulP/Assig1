@@ -117,7 +117,11 @@
                     suggestionBox.style.display = 'none';
                 }
             });
-
+            document.addEventListener('click', function (event) {
+                if (!inputField.contains(event.target)) {
+                    suggestionBox.style.display = 'none'; 
+                }
+            });
         });
     </script>
 }
