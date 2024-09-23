@@ -27,11 +27,6 @@ namespace Assig1.Controllers
             ViewBag.Title = "Offences";
             ViewBag.Active = "Offences";
 
-            /*var expiationsContext = _context
-                .Offences
-                .Include(o => o.Section)
-                .OrderBy(o => o.OffenceCode);*/
-
             var expiationsContext = from Offence in _context.Offences
                                     join Section in _context.Sections on Offence.SectionId equals Section.SectionId
                                     join ExpiationCategory in _context.ExpiationCategories on Section.CategoryId equals ExpiationCategory.CategoryId
@@ -59,7 +54,9 @@ namespace Assig1.Controllers
                     ec.CategoryName,
                 });
 
+
             #endregion 
+
             #region SearchFunction
 
             if (!string.IsNullOrEmpty(offence))
@@ -72,6 +69,21 @@ namespace Assig1.Controllers
             #endregion 
 
             return View(await expiationsContext.ToListAsync());
+        }
+
+        [Route("OffenceController/GetCategories")]
+        public IActionResult GetCategories()
+        {
+            var categories = _context.ExpiationCategories
+                .Distinct()
+                .Select(ec => new
+                {
+                    ec.CategoryId,
+                    ec.CategoryName,
+                })
+                .ToList();
+
+            return Json(categories);
         }
 
         [Route("OffenceController/GetOffenceDescriptions")]
