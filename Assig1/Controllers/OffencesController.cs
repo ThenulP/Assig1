@@ -22,7 +22,7 @@ namespace Assig1.Controllers
         }
 
         // GET: Offences
-        public async Task<IActionResult> Index(string offence)
+        public async Task<IActionResult> Index(string offence, int? categoryId)
         {
             ViewBag.Title = "Offences";
             ViewBag.Active = "Offences";
@@ -46,14 +46,12 @@ namespace Assig1.Controllers
                                         ParentCategoryId = ExpiationCategory.ParentCategoryId
                                     };
             #region Categories
-            var categories = expiationsContext
-                .Where(ec => ec.ParentCategoryId != null)
-                .Select(ec => new
-                {
-                    ec.CategoryId,
-                    ec.CategoryName,
-                });
-
+            if (categoryId != null)
+            {
+                var category = expiationsContext
+                    .Where(ec => ec.CategoryId == categoryId);
+                expiationsContext = category;
+            }
 
             #endregion 
 
