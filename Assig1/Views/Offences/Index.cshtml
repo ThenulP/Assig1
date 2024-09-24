@@ -12,6 +12,9 @@
     <input type="text" id="offence" name="offence">
     <div id="suggestions" style="display: none;"></div>
     <button type="submit">Search</button>
+    <select id="CategoryList" name="categoryId"class="form-control" >
+        <option value="" >All Categories...</option>
+    </select>
 </form>
 
 <p>
@@ -122,6 +125,28 @@
                     suggestionBox.style.display = 'none'; 
                 }
             });
+
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const selectList = document.getElementById("CategoryList");
+            fetch(`/OffenceController/GetCategories`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    data.forEach(item => {
+                        const option = document.createElement('option');
+                        option.textContent = item.categoryName;
+                        option.value = item.categoryId;
+                        selectList.appendChild(option);
+                        console.log(option);
+                    });
+                });
         });
     </script>
 }
