@@ -98,7 +98,7 @@ namespace Assig1.Controllers
         }
 
         // GET: Offences/Details/A002
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(string id, DateOnly? beforeDate, DateOnly? afterDate, int? minFee, int? maxFee)
         {
             ViewBag.Title = "Offences";
             ViewBag.Active = "Offences";
@@ -131,12 +131,39 @@ namespace Assig1.Controllers
 
                 expiations = offenceAndExpiationViewModel;
             }
-
-
-            if (offence == null)
+            else
             {
                 return NotFound();
             }
+
+            if (beforeDate != null)
+            {
+                var beforeDateQuery = expiations
+                    .Where(e => e.IncidentStartDate <= beforeDate)
+                    .ToList();
+            }
+
+            if (afterDate != null)
+            {
+                var afterDateQuery = expiations
+                    .Where(e => e.IncidentStartDate >= afterDate)
+                    .ToList();
+            }
+
+            if (minFee != null)
+            {
+                var afterDateQuery = expiations
+                    .Where(e => e.TotalFeeAmt <= minFee)
+                    .ToList();
+            }
+
+            if (maxFee != null)
+            {
+                var afterDateQuery = expiations
+                    .Where(e => e.TotalFeeAmt >= maxFee)
+                    .ToList();
+            }
+
 
             return View(expiations);
         }
