@@ -21,5 +21,7 @@ namespace Assig1.ViewModels
         [Display(Name = "Total Fee")]
         public int? TotalFeeAmt { get; set; }
 
+        public virtual Offence? Offence { get; set; }
+
     }
 }

@@ -1,4 +1,4 @@
-﻿@model Assig1.Models.Offence
+﻿@model IEnumerable<Assig1.ViewModels.OffenceAndExpiation>
 
 @{
     ViewData["Title"] = "Details";
@@ -13,56 +13,85 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.First().Offence.Description)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.First().Offence.Description)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ExpiationFee)
+            @Html.DisplayNameFor(model => model.First().Offence.ExpiationFee)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ExpiationFee)
+            @Html.DisplayFor(model => model.First().Offence.ExpiationFee)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AdultLevy)
+            @Html.DisplayNameFor(model => model.First().Offence.AdultLevy)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AdultLevy)
+            @Html.DisplayFor(model => model.First().Offence.AdultLevy)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CorporateFee)
+            @Html.DisplayNameFor(model => model.First().Offence.CorporateFee)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CorporateFee)
+            @Html.DisplayFor(model => model.First().Offence.CorporateFee)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalFee)
+            @Html.DisplayNameFor(model => model.First().Offence.TotalFee)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TotalFee)
+            @Html.DisplayFor(model => model.First().Offence.TotalFee)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DemeritPoints)
+            @Html.DisplayNameFor(model => model.First().Offence.DemeritPoints)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DemeritPoints)
+            @Html.DisplayFor(model => model.First().Offence.DemeritPoints)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SectionCode)
+            @Html.DisplayNameFor(model => model.First().Offence.SectionCode)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SectionCode)
+            @Html.DisplayFor(model => model.First().Offence.SectionCode)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Section)
+            @Html.DisplayNameFor(model => model.First().Offence.Section)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Section.SectionId)
+            @Html.DisplayFor(model => model.First().Offence.Section.SectionId)
         </dd>
     </dl>
+
+    <div class="dropdown">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+            Dropdown form
+        </button>
+        <form class="dropdown-menu p-4">
+            <div class="mb-3">
+                <label for="exampleDropdownFormEmail2" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="exampleDropdownFormEmail2" placeholder="email@example.com">
+            </div>
+            <div class="mb-3">
+                <label for="exampleDropdownFormPassword2" class="form-label">Password</label>
+                <input type="password" class="form-control" id="exampleDropdownFormPassword2" placeholder="Password">
+            </div>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="dropdownCheck2">
+                    <label class="form-check-label" for="dropdownCheck2">
+                        Remember me
+                    </label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign in</button>
+        </form>
+    </div>
+
 </div>
+
+
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.OffenceCode">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.First().Offence.OffenceCode">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

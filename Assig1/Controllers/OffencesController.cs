@@ -97,8 +97,6 @@ namespace Assig1.Controllers
             return Json(results);
         }
 
-
-
         // GET: Offences/Details/A002
         public async Task<IActionResult> Details(string id)
         {
@@ -108,6 +106,8 @@ namespace Assig1.Controllers
             {
                 return NotFound();
             }
+
+            List<OffenceAndExpiation> expiations = null;
 
             var offence = await _context.Offences
                 .Include(o => o.Section)
@@ -125,8 +125,11 @@ namespace Assig1.Controllers
                         LocationSpeedLimit = o.LocationSpeedLimit,
                         DriverState = o.DriverState,
                         TotalFeeAmt = o.TotalFeeAmt,
+                        Offence = offence
                     })
                     .ToList();
+
+                expiations = offenceAndExpiationViewModel;
             }
 
 
@@ -135,7 +138,7 @@ namespace Assig1.Controllers
                 return NotFound();
             }
 
-            return View(offence);
+            return View(expiations);
         }
 
 
