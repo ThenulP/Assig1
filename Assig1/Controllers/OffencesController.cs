@@ -97,6 +97,8 @@ namespace Assig1.Controllers
             return Json(results);
         }
 
+
+
         // GET: Offences/Details/A002
         public async Task<IActionResult> Details(string id)
         {
@@ -109,7 +111,25 @@ namespace Assig1.Controllers
 
             var offence = await _context.Offences
                 .Include(o => o.Section)
+                .Include(o => o.Expiations)
                 .FirstOrDefaultAsync(m => m.OffenceCode == id);
+
+            if (offence != null)
+            {
+                var expiationsList = offence.Expiations;
+                
+                var offenceAndExpiationViewModel = expiationsList
+                    .Select(o => new OffenceAndExpiation {
+                        IncidentStartDate = o.IncidentStartDate,
+                        VehicleSpeed = o.VehicleSpeed,
+                        LocationSpeedLimit = o.LocationSpeedLimit,
+                        DriverState = o.DriverState,
+                        TotalFeeAmt = o.TotalFeeAmt,
+                    })
+                    .ToList();
+            }
+
+
             if (offence == null)
             {
                 return NotFound();
