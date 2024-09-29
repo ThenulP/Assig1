@@ -89,7 +89,50 @@
 
 </div>
 
-
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().IncidentStartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().VehicleSpeed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().LocationSpeedLimit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().DriverState)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().TotalFeeAmt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncidentStartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VehicleSpeed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LocationSpeedLimit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriverState)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalFeeAmt)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.First().Offence.OffenceCode">Edit</a> |
