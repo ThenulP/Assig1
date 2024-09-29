@@ -94,6 +94,9 @@
         <thead>
             <tr>
                 <th>
+                    @Html.DisplayNameFor(model => model.OffenceAndExpiations.First().ExpId)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.OffenceAndExpiations.First().IncidentStartDate)
                 </th>
                 <th>
@@ -116,6 +119,9 @@
             {
                 <tr>
                     <td>
+                        @Html.DisplayFor(modelItem => item.ExpId)
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.IncidentStartDate)
                     </td>
                     <td>
@@ -129,6 +135,9 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.TotalFeeAmt)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.ExpId">More Details</a>
                     </td>
                 </tr>
             }

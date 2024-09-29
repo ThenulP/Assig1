@@ -5,6 +5,10 @@ namespace Assig1.ViewModels
 {
     public class OffenceAndExpiation
     {
+        [Key]
+        [Display(Name = "Expiation No.")]
+        public int ExpId { get; set; }
+
         [Display(Name = "Incident Date")]
         public DateOnly IncidentStartDate { get; set; }
 

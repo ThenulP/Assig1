@@ -131,6 +131,7 @@ namespace Assig1.Controllers
                     var offenceAndExpiationViewModel = expiationsList
                         .Select(o => new OffenceAndExpiation
                         {
+                            ExpId = o.ExpId,
                             IncidentStartDate = o.IncidentStartDate,
                             VehicleSpeed = o.VehicleSpeed,
                             LocationSpeedLimit = o.LocationSpeedLimit,
