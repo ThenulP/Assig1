@@ -152,6 +152,8 @@ namespace Assig1.Controllers
                     var beforeDateQuery = expiations
                         .Where(e => e.IncidentStartDate <= beforeDate)
                         .ToList();
+
+                    expiations = beforeDateQuery;
                 }
 
                 if (afterDate != null)
@@ -159,20 +161,26 @@ namespace Assig1.Controllers
                     var afterDateQuery = expiations
                         .Where(e => e.IncidentStartDate >= afterDate)
                         .ToList();
+
+                    expiations = afterDateQuery;
                 }
 
                 if (minFee != null)
                 {
-                    var afterDateQuery = expiations
-                        .Where(e => e.TotalFeeAmt <= minFee)
+                    var minFeeQuery = expiations
+                        .Where(e => e.TotalFeeAmt >= minFee)
                         .ToList();
+
+                    expiations = minFeeQuery;
                 }
 
                 if (maxFee != null)
                 {
-                    var afterDateQuery = expiations
-                        .Where(e => e.TotalFeeAmt >= maxFee)
+                    var maxFeeQuery = expiations
+                        .Where(e => e.TotalFeeAmt <= maxFee)
                         .ToList();
+
+                    expiations = maxFeeQuery;
                 }
 
                 offenceExpiationDetails.OffenceAndExpiations = expiations;
