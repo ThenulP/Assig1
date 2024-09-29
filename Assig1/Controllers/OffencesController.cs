@@ -107,65 +107,79 @@ namespace Assig1.Controllers
                 return NotFound();
             }
 
-            List<OffenceAndExpiation> expiations = null;
+           OffenceExpiationDetails offenceExpiationDetails = new OffenceExpiationDetails();
 
             var offence = await _context.Offences
                 .Include(o => o.Section)
                 .Include(o => o.Expiations)
                 .FirstOrDefaultAsync(m => m.OffenceCode == id);
 
-            if (offence != null)
-            {
-                var expiationsList = offence.Expiations;
-                
-                var offenceAndExpiationViewModel = expiationsList
-                    .Select(o => new OffenceAndExpiation {
-                        IncidentStartDate = o.IncidentStartDate,
-                        VehicleSpeed = o.VehicleSpeed,
-                        LocationSpeedLimit = o.LocationSpeedLimit,
-                        DriverState = o.DriverState,
-                        TotalFeeAmt = o.TotalFeeAmt,
-                        Offence = offence
-                    })
-                    .ToList();
+            offenceExpiationDetails.Offence = offence;
 
-                expiations = offenceAndExpiationViewModel;
+           if (beforeDate == null && afterDate == null && minFee == null && maxFee == null)
+            {
+                offenceExpiationDetails.OffenceAndExpiations = null;
             }
             else
             {
-                return NotFound();
+                List<OffenceAndExpiation> expiations = null;
+
+                if (offence != null)
+                {
+                    var expiationsList = offence.Expiations;
+
+                    var offenceAndExpiationViewModel = expiationsList
+                        .Select(o => new OffenceAndExpiation
+                        {
+                            IncidentStartDate = o.IncidentStartDate,
+                            VehicleSpeed = o.VehicleSpeed,
+                            LocationSpeedLimit = o.LocationSpeedLimit,
+                            DriverState = o.DriverState,
+                            TotalFeeAmt = o.TotalFeeAmt,
+                            Offence = offence
+                        })
+                        .ToList();
+
+                    expiations = offenceAndExpiationViewModel;
+                }
+                else
+                {
+                    return NotFound();
+                }
+
+                if (beforeDate != null)
+                {
+                    var beforeDateQuery = expiations
+                        .Where(e => e.IncidentStartDate <= beforeDate)
+                        .ToList();
+                }
+
+                if (afterDate != null)
+                {
+                    var afterDateQuery = expiations
+                        .Where(e => e.IncidentStartDate >= afterDate)
+                        .ToList();
+                }
+
+                if (minFee != null)
+                {
+                    var afterDateQuery = expiations
+                        .Where(e => e.TotalFeeAmt <= minFee)
+                        .ToList();
+                }
+
+                if (maxFee != null)
+                {
+                    var afterDateQuery = expiations
+                        .Where(e => e.TotalFeeAmt >= maxFee)
+                        .ToList();
+                }
+
+                offenceExpiationDetails.OffenceAndExpiations = expiations;
             }
 
-            if (beforeDate != null)
-            {
-                var beforeDateQuery = expiations
-                    .Where(e => e.IncidentStartDate <= beforeDate)
-                    .ToList();
-            }
 
-            if (afterDate != null)
-            {
-                var afterDateQuery = expiations
-                    .Where(e => e.IncidentStartDate >= afterDate)
-                    .ToList();
-            }
-
-            if (minFee != null)
-            {
-                var afterDateQuery = expiations
-                    .Where(e => e.TotalFeeAmt <= minFee)
-                    .ToList();
-            }
-
-            if (maxFee != null)
-            {
-                var afterDateQuery = expiations
-                    .Where(e => e.TotalFeeAmt >= maxFee)
-                    .ToList();
-            }
-
-
-            return View(expiations);
+            return View(offenceExpiationDetails);
         }
 
 

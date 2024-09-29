@@ -1,5 +1,4 @@
-﻿@model IEnumerable<Assig1.ViewModels.OffenceAndExpiation>
-
+﻿@model Assig1.ViewModels.OffenceExpiationDetails
 @{
     ViewData["Title"] = "Details";
 }
@@ -13,52 +12,52 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.First().Offence.Description)
+            @Html.DisplayNameFor(model => model.Offence.Description)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.First().Offence.Description)
+            @Html.DisplayFor(model => model.Offence.Description)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.First().Offence.ExpiationFee)
+            @Html.DisplayNameFor(model => model.Offence.ExpiationFee)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.First().Offence.ExpiationFee)
+            @Html.DisplayFor(model => model.Offence.ExpiationFee)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.First().Offence.AdultLevy)
+            @Html.DisplayNameFor(model => model.Offence.AdultLevy)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.First().Offence.AdultLevy)
+            @Html.DisplayFor(model => model.Offence.AdultLevy)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.First().Offence.CorporateFee)
+            @Html.DisplayNameFor(model => model.Offence.CorporateFee)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.First().Offence.CorporateFee)
+            @Html.DisplayFor(model => model.Offence.CorporateFee)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.First().Offence.TotalFee)
+            @Html.DisplayNameFor(model => model.Offence.TotalFee)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.First().Offence.TotalFee)
+            @Html.DisplayFor(model => model.Offence.TotalFee)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.First().Offence.DemeritPoints)
+            @Html.DisplayNameFor(model => model.Offence.DemeritPoints)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.First().Offence.DemeritPoints)
+            @Html.DisplayFor(model => model.Offence.DemeritPoints)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.First().Offence.SectionCode)
+            @Html.DisplayNameFor(model => model.Offence.SectionCode)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.First().Offence.SectionCode)
+            @Html.DisplayFor(model => model.Offence.SectionCode)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.First().Offence.Section)
+            @Html.DisplayNameFor(model => model.Offence.Section)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.First().Offence.Section.SectionId)
+            @Html.DisplayFor(model => model.Offence.Section.SectionId)
         </dd>
     </dl>
 
@@ -89,52 +88,55 @@
 
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.First().IncidentStartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().VehicleSpeed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().LocationSpeedLimit)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().DriverState)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().TotalFeeAmt)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+@if (Model.OffenceAndExpiations != null && Model.OffenceAndExpiations.Any())
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IncidentStartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.VehicleSpeed)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LocationSpeedLimit)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DriverState)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalFeeAmt)
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.OffenceAndExpiations.First().IncidentStartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OffenceAndExpiations.First().VehicleSpeed)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OffenceAndExpiations.First().LocationSpeedLimit)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OffenceAndExpiations.First().DriverState)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OffenceAndExpiations.First().TotalFeeAmt)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OffenceAndExpiations)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IncidentStartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VehicleSpeed)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LocationSpeedLimit)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DriverState)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalFeeAmt)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.First().Offence.OffenceCode">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.Offence.OffenceCode">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
