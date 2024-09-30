@@ -86,6 +86,12 @@
         </form>
     </div>
 
+    <div>
+        <a asp-action="MoreDetails" asp-route-id="@Model?.Offence.OffenceCode">More Details</a>
+        <a asp-action="Edit" asp-route-id="@Model?.Offence.OffenceCode">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+
 </div>
 
 @if (Model.OffenceAndExpiations != null && Model.OffenceAndExpiations.Any())
@@ -136,16 +142,9 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.TotalFeeAmt)
                     </td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@item.ExpId">More Details</a>
-                    </td>
                 </tr>
             }
         </tbody>
     </table>
 }
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Offence.OffenceCode">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
