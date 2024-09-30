@@ -191,6 +191,50 @@ namespace Assig1.Controllers
             return View(offenceExpiationDetails);
         }
 
+        public async Task<IActionResult> MoreDetails(string id)
+        {
+            var offence = await _context.Offences
+               .Include(o => o.Section)
+               .Include(o => o.Expiations)
+               .FirstOrDefaultAsync(m => m.OffenceCode == id);
+
+            var expiationsList = offence.Expiations;
+
+            var maxSpeed = expiationsList
+                .Max(e => e.VehicleSpeed);
+
+            var minSpeed = expiationsList
+                .Min(e => e.VehicleSpeed);
+
+            var avgSpeed = expiationsList
+                .Average(e => e.VehicleSpeed);
+
+            var totalFeePerMonth = expiationsList
+                .GroupBy(o => new { o.IncidentStartDate.Month })
+                .Select(g => new
+                {
+                    Month = g.Key.Month,
+                    TotalFees = g.Sum(o => o.TotalFeeAmt)
+                });
+
+            var totalOffencesPerMonth = expiationsList
+                .GroupBy(o => new { o.IncidentStartDate.Month })
+                .Select(g => new
+                {
+                    Month = g.Key.Month,
+                    TotalOffences = g.Count()
+                });
+
+            ExpiationDetails expiationDetails = new ExpiationDetails();
+            expiationDetails.MaxSpeed = maxSpeed;
+            expiationDetails.MinSpeed = minSpeed;
+            expiationDetails.AvgSpeed = avgSpeed;
+            expiationDetails.TotalFeePerMonth = totalFeePerMonth;
+            expiationDetails.TotalOffencesPerMonth = totalOffencesPerMonth;
+
+
+            return View(expiationDetails);
+        }
 
         private bool OffenceExists(string id)
         {
