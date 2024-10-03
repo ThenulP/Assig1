@@ -6,7 +6,7 @@ namespace Assig1.ViewModels
     public class OffenceExpiationDetails
     {
         [Required]
-        public Offence Offence { get; set; }  
-        public IEnumerable<OffenceAndExpiation> OffenceAndExpiations { get; set; }
+        public Offence? Offence { get; set; }  
+        public IEnumerable<OffenceAndExpiation>? OffenceAndExpiations { get; set; }
     }
 }
