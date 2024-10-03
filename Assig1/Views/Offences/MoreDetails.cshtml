@@ -6,7 +6,7 @@
 <h1>MoreDetails</h1>
 
 <div>
-    <dl class="row">
+    <dl id="descList" class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.MaxSpeed)
         </dt>
@@ -27,3 +27,19 @@
         </dd>
     </dl>
 </div>
+<div>
+    <svg id="totalFeesGraph" width="100%" height="600px" class="border border-primary rounded p-2"></svg>
+</div>
+
+@section scripts {
+    <script type="module">
+        import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+        const svg = d3.select('#totalFeesGraph');
+
+        let w = svg.node().getBoundingCLientRect().width;
+        let h = svg.node().getBoundingCLientRect().height;
+
+
+    </script>
+}

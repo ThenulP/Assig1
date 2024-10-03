@@ -191,6 +191,52 @@ namespace Assig1.Controllers
             return View(offenceExpiationDetails);
         }
 
+        [Route("OffenceController/GetTotalFeePerMonth")]
+        public async Task<IActionResult> GetTotalFeePerMonth(string id)
+        {
+            var offence = await _context.Offences
+               .Include(o => o.Section)
+               .Include(o => o.Expiations)
+               .FirstOrDefaultAsync(m => m.OffenceCode == id);
+
+            var expiationsList = offence.Expiations;
+
+            var totalFeePerMonth = expiationsList
+                .GroupBy(o => new { o.IncidentStartDate.Month })
+                .Select(g => new
+                {
+                    Month = g.Key.Month,
+                    TotalFees = g.Sum(o => o.TotalFeeAmt)
+                })
+                .ToList();
+
+
+            return Json(totalFeePerMonth);
+        }
+
+        [Route("OffenceController/GetTotalOffencesPerMonth")]
+        public async Task<IActionResult> GetTotalOffencesPerMonth(string id)
+        {
+            var offence = await _context.Offences
+               .Include(o => o.Section)
+               .Include(o => o.Expiations)
+               .FirstOrDefaultAsync(m => m.OffenceCode == id);
+
+            var expiationsList = offence.Expiations;
+
+            var totalOffencesPerMonth = expiationsList
+                .GroupBy(o => new { o.IncidentStartDate.Month })
+                .Select(g => new
+                {
+                    Month = g.Key.Month,
+                    TotalOffences = g.Count()
+                })
+                .ToList();
+
+
+            return Json(totalOffencesPerMonth);
+        }
+
         public async Task<IActionResult> MoreDetails(string id)
         {
             var offence = await _context.Offences
@@ -209,28 +255,14 @@ namespace Assig1.Controllers
             var avgSpeed = expiationsList
                 .Average(e => e.VehicleSpeed);
 
-            var totalFeePerMonth = expiationsList
-                .GroupBy(o => new { o.IncidentStartDate.Month })
-                .Select(g => new
-                {
-                    Month = g.Key.Month,
-                    TotalFees = g.Sum(o => o.TotalFeeAmt)
-                });
+            var offenceCode = id;
 
-            var totalOffencesPerMonth = expiationsList
-                .GroupBy(o => new { o.IncidentStartDate.Month })
-                .Select(g => new
-                {
-                    Month = g.Key.Month,
-                    TotalOffences = g.Count()
-                });
 
             ExpiationDetails expiationDetails = new ExpiationDetails();
             expiationDetails.MaxSpeed = maxSpeed;
             expiationDetails.MinSpeed = minSpeed;
             expiationDetails.AvgSpeed = avgSpeed;
-            expiationDetails.TotalFeePerMonth = totalFeePerMonth;
-            expiationDetails.TotalOffencesPerMonth = totalOffencesPerMonth;
+            expiationDetails.OffenceCode = offenceCode;
 
 
             return View(expiationDetails);

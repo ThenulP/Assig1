@@ -14,8 +14,8 @@ namespace Assig1.ViewModels
         [Display(Name = "Average Speed")]
         public double? AvgSpeed { get; set; }
 
-        public IEnumerable<dynamic>? TotalFeePerMonth { get; set; }
+        [Required]
+        public string? OffenceCode { get; set; }
 
-        public IEnumerable<dynamic>? TotalOffencesPerMonth { get; set; }
     }
 }
