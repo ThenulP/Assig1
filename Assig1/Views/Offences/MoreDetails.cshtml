@@ -40,7 +40,7 @@
         let w = svg.node().getBoundingClientRect().width;
         let h = svg.node().getBoundingClientRect().height;
 
-        const chartMargins = {left: 20, right: 25, top: 25, bottom: 80}
+        const chartMargins = {left: 50, right: 25, top: 25, bottom: 80}
 
         w = w - (chartMargins.left + chartMargins.right);
         h = h - (chartMargins.top + chartMargins.bottom);
@@ -56,6 +56,14 @@
                 .catch(err => console.log(err.message))
         });
 
+        function getMonthName(monthNumber) {
+            const monthNames = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+            return monthNames[monthNumber - 1];
+        }
+
         function buildGraph(dataSet) {
             console.log(dataSet);
             let totalFeesRange = d3.extent(dataSet, (d, i) => +d.totalFees);
@@ -70,7 +78,7 @@
                 .domain([0, maxTotalFees])
                 .range([h, 0]);
 
-            let monthArray = Array.from(dataSet, (d, i) => d.month);
+            let monthArray = Array.from(dataSet, (d, i) => getMonthName(d.month));
 
             let xScale = d3.scaleBand()
                 .domain(monthArray)
@@ -98,7 +106,10 @@
                 .attr('width', xScale.bandwidth())
                 .attr('fill', 'black')
 
-            let yAxis = d3.axisLeft(yScale);
+            let yAxis = d3.axisLeft(yScale)
+                .ticks(5)
+                .tickFormat(d3.format("~s"));
+
             chartGroup.append('g')
                 .classed('axis y', true)
                 .call(yAxis);
