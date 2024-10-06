@@ -97,6 +97,32 @@ namespace Assig1.Controllers
             return Json(results);
         }
 
+        [Route("OffenceController/GetCategoryOffences")]
+        public IActionResult GetCategoryOffences()
+        {
+            var offenceCategories = from Offence in _context.Offences
+                                    join Section in _context.Sections on Offence.SectionId equals Section.SectionId
+                                    join ExpiationCategory in _context.ExpiationCategories on Section.CategoryId equals ExpiationCategory.CategoryId
+                                    select new
+                                    {
+                                        Offence = Offence.OffenceCode,
+                                        CategoryName = ExpiationCategory.CategoryName,
+
+                                    };
+
+            var results = offenceCategories
+                .GroupBy(oc => new { oc.CategoryName })
+                .Select(g => new {
+                    CategoryName = g.Key,
+                    OffenceCount = g.Count()
+                })
+                .ToList();
+
+
+
+            return Json(results);
+        }
+
         // GET: Offences/Details/A002
         public async Task<IActionResult> Details(string id, DateOnly? beforeDate, DateOnly? afterDate, int? minFee, int? maxFee)
         {
