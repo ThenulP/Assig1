@@ -4,62 +4,66 @@
 }
 
 <div class="text-dark bg-gradient bg-warning p-2 my-2 border rounded">
-    <h1>Details</h1>
+    <h1 class="text-dark">Details</h1>
 </div>
 
-<div>
-    <h4>Offence</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Offence.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Offence.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Offence.ExpiationFee)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Offence.ExpiationFee)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Offence.AdultLevy)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Offence.AdultLevy)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Offence.CorporateFee)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Offence.CorporateFee)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Offence.TotalFee)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Offence.TotalFee)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Offence.DemeritPoints)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Offence.DemeritPoints)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Offence.SectionCode)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Offence.SectionCode)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Offence.Section)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Offence.Section.SectionId)
-        </dd>
-    </dl>
+<div class="card mb-4">
+    <div class="card-header">
+        <h4 class="mb-0">Offence Details</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Offence.Description)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Offence.Description)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Offence.ExpiationFee)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Offence.ExpiationFee)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Offence.AdultLevy)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Offence.AdultLevy)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Offence.CorporateFee)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Offence.CorporateFee)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Offence.TotalFee)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Offence.TotalFee)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Offence.DemeritPoints)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Offence.DemeritPoints)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Offence.SectionCode)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Offence.SectionCode)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Offence.Section)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Offence.Section.SectionId)
+            </dd>
+        </dl>
+    </div>
+</div>
 
     <div class="dropdown">
         <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
@@ -86,18 +90,26 @@
         </form>
     </div>
 
-    <div>
-        <a asp-action="MoreDetails" asp-route-id="@Model?.Offence.OffenceCode">More Details</a>
-        <a asp-action="Edit" asp-route-id="@Model?.Offence.OffenceCode">Edit</a> |
-        <a asp-action="Index">Back to List</a>
+    <div class="mb-4">
+        <div class="btn-group" role="group" aria-label="Action Buttons">
+            <a asp-action="MoreDetails" asp-route-id="@Model?.Offence.OffenceCode" class="btn btn-primary">
+                More Details
+            </a>
+            <a asp-action="Edit" asp-route-id="@Model?.Offence.OffenceCode" class="btn btn-warning">
+                Edit
+            </a>
+            <a asp-action="Index" class="btn btn-secondary">
+                Back to List
+            </a>
+        </div>
     </div>
 
 </div>
 
 @if (Model.OffenceAndExpiations != null && Model.OffenceAndExpiations.Any())
 {
-    <table class="table">
-        <thead>
+    <table class="table table-striped table-bordered">
+        <thead class="table-light">
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.OffenceAndExpiations.First().ExpId)
