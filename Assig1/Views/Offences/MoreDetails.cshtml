@@ -3,7 +3,9 @@
     ViewData["Title"] = "More Details";
 }
 
-<h1>MoreDetails</h1>
+<div class="text-dark bg-gradient bg-warning p-2 my-2 border rounded">
+    <h1>More Details</h1>
+</div>
 
 <div>
     <dl id="descList" class="row">
@@ -40,21 +42,12 @@
         let w = svg.node().getBoundingClientRect().width;
         let h = svg.node().getBoundingClientRect().height;
 
-        const chartMargins = {left: 50, right: 25, top: 25, bottom: 80}
+        const chartMargins = { left: 30, right: 25, top: 25, bottom: 80 };
 
         w = w - (chartMargins.left + chartMargins.right);
         h = h - (chartMargins.top + chartMargins.bottom);
 
-        const id = "@Model.OffenceCode"
-
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch(`/OffenceController/GetTotalFeePerMonth?id=${id}`)
-                .then(response => {
-                    return response.json()
-                })
-                .then(data => buildGraph(data))
-                .catch(err => console.log(err.message))
-        });
+        const id = "@Model.OffenceCode";
 
         function getMonthName(monthNumber) {
             const monthNames = [
@@ -64,12 +57,27 @@
             return monthNames[monthNumber - 1];
         }
 
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch(`/OffenceController/GetTotalFeePerMonth?id=${id}`)
+                .then(response => response.json())
+                .then(data => { 
+                    data.forEach(item => {
+                        item.month = getMonthName(item.month);
+                    });
+
+                    return buildGraph(data);
+                })
+                .catch(err => console.log(err.message));
+        });
+
+
         function buildGraph(dataSet) {
-            console.log(dataSet);
-            let totalFeesRange = d3.extent(dataSet, (d, i) => +d.totalFees);
+            console.log(dataSet); 
+
+            let totalFeesRange = d3.extent(dataSet, (d) => +d.totalFees);
             let maxTotalFees = totalFeesRange[1];
 
-            console.log(maxTotalFees);
+            console.log(maxTotalFees); 
 
             const barMargin = 10;
             const barWidth = w / dataSet.length;
@@ -78,33 +86,28 @@
                 .domain([0, maxTotalFees])
                 .range([h, 0]);
 
-            let monthArray = Array.from(dataSet, (d, i) => getMonthName(d.month));
+            let monthArray = Array.from(dataSet, (d, i) => d.month);
 
             let xScale = d3.scaleBand()
-                .domain(monthArray)
+                .domain(monthArray) 
                 .range([0, w])
-                .paddingInner(0.05)
+                .paddingInner(0.1);
 
             const chartGroup = svg.append('g')
                 .classed('chartGroup', true)
                 .attr('transform', `translate(${chartMargins.left}, ${chartMargins.top})`);
 
-            let barGroups = svg
-                .selectAll('g')
+            let barGroups = chartGroup
+                .selectAll('rect')
                 .data(dataSet);
 
-            let newBarGroups = barGroups.enter()
-                .append('g')
-                .attr('transform', (d, i) => {
-                    return `translate(${xScale(d.month)}, ${yScale(d.totalFees)})`;
-                });
-
-            newBarGroups
+            barGroups.enter()
                 .append('rect')
-                .attr('x', 0)
-                .attr('height', (d, i) => { return h - yScale(d.totalFees); })
-                .attr('width', xScale.bandwidth())
-                .attr('fill', 'black')
+                .attr('x', (d) => xScale(d.month)) 
+                .attr('y', (d) => yScale(d.totalFees)) 
+                .attr('height', (d) => h - yScale(d.totalFees)) 
+                .attr('width', xScale.bandwidth()) 
+                .attr('fill', 'black');
 
             let yAxis = d3.axisLeft(yScale)
                 .ticks(5)
@@ -116,11 +119,9 @@
 
             let xAxis = d3.axisBottom(xScale);
             chartGroup.append('g')
-            .attr('transform', `translate(0,${h})`)
+                .attr('transform', `translate(0,${h})`)
                 .classed('axis x', true)
                 .call(xAxis);
-
         }
-
     </script>
 }
