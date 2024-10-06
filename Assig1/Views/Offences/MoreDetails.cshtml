@@ -30,22 +30,29 @@
     </dl>
 </div>
 <div>
-    <svg id="totalFeesGraph" width="100%" height="600px" class="border border-primary rounded p-2"></svg>
+    <svg id="totalFeesGraph" width="50%" height="600px" class="border border-primary rounded p-2"></svg>
+    <svg id="totalOffencesGraph" width="50%" height="600px" class="border border-primary rounded p-2"></svg>
 </div>
 
 @section scripts {
     <script type="module">
         import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
-        const svg = d3.select('#totalFeesGraph');
+        const chartMargins = { left: 40, right: 25, top: 25, bottom: 80 };
 
-        let w = svg.node().getBoundingClientRect().width;
-        let h = svg.node().getBoundingClientRect().height;
+        const svg1 = d3.select('#totalFeesGraph');
+        const svg2 = d3.select('#totalOffencesGraph');
 
-        const chartMargins = { left: 30, right: 25, top: 25, bottom: 80 };
+        let w1 = svg1.node().getBoundingClientRect().width;
+        let h1 = svg1.node().getBoundingClientRect().height;
 
-        w = w - (chartMargins.left + chartMargins.right);
-        h = h - (chartMargins.top + chartMargins.bottom);
+        let w2 = svg2.node().getBoundingClientRect().width;
+        let h2 = svg2.node().getBoundingClientRect().height;
+
+        w1 = w1 - (chartMargins.left + chartMargins.right);
+        h1 = h1 - (chartMargins.top + chartMargins.bottom);
+        w2 = w2 - (chartMargins.left + chartMargins.right);
+        h2 = h2 - (chartMargins.top + chartMargins.bottom);
 
         const id = "@Model.OffenceCode";
 
@@ -60,40 +67,49 @@
         document.addEventListener("DOMContentLoaded", function () {
             fetch(`/OffenceController/GetTotalFeePerMonth?id=${id}`)
                 .then(response => response.json())
-                .then(data => { 
+                .then(data => {
                     data.forEach(item => {
                         item.month = getMonthName(item.month);
                     });
 
-                    return buildGraph(data);
+                    return buildGraph1(data);
+                })
+                .catch(err => console.log(err.message));
+
+            fetch(`/OffenceController/GetTotalOffencesPerMonth?id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(item => {
+                        item.month = getMonthName(item.month);
+                    });
+
+                    return buildGraph2(data);
                 })
                 .catch(err => console.log(err.message));
         });
 
-
-        function buildGraph(dataSet) {
-            console.log(dataSet); 
+        function buildGraph1(dataSet) {
+            console.log(dataSet);
 
             let totalFeesRange = d3.extent(dataSet, (d) => +d.totalFees);
             let maxTotalFees = totalFeesRange[1];
 
-            console.log(maxTotalFees); 
+            console.log(maxTotalFees);
 
-            const barMargin = 10;
-            const barWidth = w / dataSet.length;
+            const barWidth = w1 / dataSet.length;
 
             let yScale = d3.scaleLinear()
                 .domain([0, maxTotalFees])
-                .range([h, 0]);
+                .range([h1, 0]);
 
             let monthArray = Array.from(dataSet, (d, i) => d.month);
 
             let xScale = d3.scaleBand()
-                .domain(monthArray) 
-                .range([0, w])
+                .domain(monthArray)
+                .range([0, w1])
                 .paddingInner(0.1);
 
-            const chartGroup = svg.append('g')
+            const chartGroup = svg1.append('g')
                 .classed('chartGroup', true)
                 .attr('transform', `translate(${chartMargins.left}, ${chartMargins.top})`);
 
@@ -103,11 +119,26 @@
 
             barGroups.enter()
                 .append('rect')
-                .attr('x', (d) => xScale(d.month)) 
-                .attr('y', (d) => yScale(d.totalFees)) 
-                .attr('height', (d) => h - yScale(d.totalFees)) 
-                .attr('width', xScale.bandwidth()) 
+                .attr('x', (d) => xScale(d.month))
+                .attr('y', (d) => yScale(d.totalFees))
+                .attr('height', (d) => h1 - yScale(d.totalFees))
+                .attr('width', xScale.bandwidth())
                 .attr('fill', 'black');
+
+            barGroups.enter()
+                .append('text')
+                .attr("text-anchor", "middle")
+                .attr('x', (d) => xScale(d.month) + xScale.bandwidth() / 2) 
+                .attr('y', (d) => {
+                    let barHeight = h1 - yScale(d.totalFees); 
+                    return yScale(d.totalFees) + barHeight / 2 + 5; 
+                })
+                .attr('fill', 'white')
+                .style('font-size', '1em')
+                .text((d) => d.totalFees.toLocaleString());
+
+
+            console.log(barGroups);
 
             let yAxis = d3.axisLeft(yScale)
                 .ticks(5)
@@ -119,7 +150,69 @@
 
             let xAxis = d3.axisBottom(xScale);
             chartGroup.append('g')
-                .attr('transform', `translate(0,${h})`)
+                .attr('transform', `translate(0,${h1})`)
+                .classed('axis x', true)
+                .call(xAxis);
+        }
+
+        function buildGraph2(dataSet) {
+            console.log(dataSet);
+
+            let totalOffencesRange = d3.extent(dataSet, (d) => +d.totalOffences);
+            let maxTotalOffences = totalOffencesRange[1];
+
+            console.log(maxTotalOffences);
+
+            const barWidth = w2 / dataSet.length;
+
+            let yScale = d3.scaleLinear()
+                .domain([0, maxTotalOffences])
+                .range([h2, 0]);
+
+            let monthArray = Array.from(dataSet, (d, i) => d.month);
+
+            let xScale = d3.scaleBand()
+                .domain(monthArray)
+                .range([0, w2])
+                .paddingInner(0.1);
+
+            const chartGroup = svg2.append('g')
+                .classed('chartGroup', true)
+                .attr('transform', `translate(${chartMargins.left}, ${chartMargins.top})`);
+
+            let barGroups = chartGroup
+                .selectAll('rect')
+                .data(dataSet);
+
+            barGroups.enter()
+                .append('rect')
+                .attr('x', (d) => xScale(d.month))
+                .attr('y', (d) => yScale(d.totalOffences))
+                .attr('height', (d) => h1 - yScale(d.totalOffences))
+                .attr('width', xScale.bandwidth())
+                .attr('fill', 'black');
+
+
+            barGroups.enter()
+                .append('text')
+                .attr("text-anchor", "middle")
+                .attr('x', (d) => xScale(d.month) + xScale.bandwidth() / 2) 
+                .attr('y', (d) => {
+                    let barHeight = h1 - yScale(d.totalOffences); 
+                    return yScale(d.totalOffences) + barHeight / 2 + 5; 
+                })
+                .attr('fill', 'white')
+                .style('font-size', '1em')
+                .text((d) => d.totalOffences.toLocaleString());
+
+            let yAxis = d3.axisLeft(yScale);
+            chartGroup.append('g')
+                .classed('axis y', true)
+                .call(yAxis);
+
+            let xAxis = d3.axisBottom(xScale);
+            chartGroup.append('g')
+                .attr('transform', `translate(0,${h2})`)
                 .classed('axis x', true)
                 .call(xAxis);
         }
